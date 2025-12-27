@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.offcamplife.model.PantryItem" %>
 
@@ -11,30 +10,28 @@
 <h2>Add Pantry Item</h2>
 
 <form method="post" action="pantry">
-    Name: <input type="text" name="name" required><br><br>
-    Category: <input type="text" name="category"><br><br>
-    Storage Type: <input type="text" name="storageType"><br><br>
-    Expiry Date: <input type="date" name="expiryDate"><br><br>
-
-    <button type="submit">Add Item</button>
+    Name: <input type="text" name="name" required /><br/>
+    Category: <input type="text" name="category" /><br/>
+    Storage Type: <input type="text" name="storageType" /><br/>
+    Expiry Date: <input type="date" name="expiryDate" /><br/>
+    <button type="submit">Add</button>
 </form>
 
-<hr>
+<hr/>
 
-<h2>My Pantry</h2>
+<h2>Pantry Items</h2>
 
-<table border="1" cellpadding="8">
+<table border="1">
     <tr>
         <th>Name</th>
         <th>Category</th>
         <th>Storage</th>
         <th>Expiry</th>
+        <th>Action</th>
     </tr>
 
     <%
-        List<PantryItem> items =
-                (List<PantryItem>) request.getAttribute("items");
-
+        List<PantryItem> items = (List<PantryItem>) request.getAttribute("items");
         if (items != null) {
             for (PantryItem i : items) {
     %>
@@ -43,6 +40,12 @@
         <td><%= i.getCategory() %></td>
         <td><%= i.getStorageType() %></td>
         <td><%= i.getExpiryDate() %></td>
+        <td>
+            <a href="pantry?action=delete&id=<%= i.getId() %>"
+               onclick="return confirm('Delete this item?');">
+                Delete
+            </a>
+        </td>
     </tr>
     <%
             }

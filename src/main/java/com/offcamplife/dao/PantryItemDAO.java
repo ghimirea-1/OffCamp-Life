@@ -22,12 +22,9 @@ public class PantryItemDAO {
             ps.setString(1, item.getName());
             ps.setString(2, item.getCategory());
             ps.setString(3, item.getStorageType());
-
-            if (item.getExpiryDate() != null) {
-                ps.setString(4, item.getExpiryDate().toString());
-            } else {
-                ps.setNull(4, Types.VARCHAR);
-            }
+            ps.setString(4, item.getExpiryDate() != null
+                    ? item.getExpiryDate().toString()
+                    : null);
 
             ps.executeUpdate();
 
@@ -65,5 +62,20 @@ public class PantryItemDAO {
         }
 
         return items;
+    }
+
+    // ✅ NEW: DELETE BY ID
+    public void deleteById(long id) {
+        String sql = "DELETE FROM pantry_items WHERE id = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

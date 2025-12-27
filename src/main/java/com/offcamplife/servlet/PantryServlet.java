@@ -21,6 +21,16 @@ public class PantryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
+        // ✅ HANDLE DELETE
+        String action = req.getParameter("action");
+        String idParam = req.getParameter("id");
+
+        if ("delete".equals(action) && idParam != null) {
+            dao.deleteById(Long.parseLong(idParam));
+            resp.sendRedirect("pantry");
+            return;
+        }
+
         List<PantryItem> items = dao.findAll();
         req.setAttribute("items", items);
 
@@ -47,8 +57,6 @@ public class PantryServlet extends HttpServlet {
         }
 
         dao.save(item);
-
         resp.sendRedirect("pantry");
     }
 }
-
